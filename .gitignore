@@ -1,0 +1,11 @@
+.env
+data/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+static/panels/*
+!static/panels/.gitkeep
+static/exports/*
+!static/exports/.gitkeep

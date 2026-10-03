@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "comiccraft"
+version = "1.0.0"
+description = "Create illustrated five-panel comics with Gemini and Stable Diffusion."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.30,<1",
+  "jinja2>=3.1,<4",
+  "python-multipart>=0.0.9",
+  "google-genai>=1.0,<2",
+  "httpx>=0.27,<1",
+  "python-dotenv>=1.0,<2",
+  "pydantic>=2.8,<3",
+  "fpdf2>=2.8,<3",
+  "Pillow>=10.4,<12",
+]
+
+[project.optional-dependencies]
+images = [
+  "diffusers>=0.30,<1",
+  "transformers>=4.44,<5",
+  "accelerate>=0.34,<2",
+  "torch>=2.4",
+]
+test = ["pytest>=8,<9"]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
