@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f0e8">
+  <title>ComicCraft — Make a comic</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="ComicCraft home"><span class="brand-mark">C</span> ComicCraft</a>
+    <nav class="header-links" aria-label="Main navigation">
+      {% if auth_user %}
+      <span class="account-email">{{ auth_user.email }}</span>
+      <form class="logout-form" action="/logout" method="post"><button class="quiet-link logout-button" type="submit">Sign out</button></form>
+      {% else %}
+      <a class="quiet-link" href="/login">Sign in</a>
+      <a class="quiet-link" href="/register">Create account</a>
+      {% endif %}
+      <a class="quiet-link" href="/docs">API docs <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main class="hero">
+    <section class="intro">
+      <p class="eyebrow">YOUR IDEA, PANEL BY PANEL</p>
+      <h1>There's a comic<br>in <span>every idea.</span></h1>
+      <p class="intro-copy">Give your characters a world to explore. Gemini writes the story; AI illustration brings every scene to life.</p>
+      <div class="feature-note"><span aria-hidden="true">✳</span><span>A complete, illustrated five-panel story — ready to download and share.</span></div>
+    </section>
+
+    <section class="form-card" aria-labelledby="form-title">
+      <div class="card-heading">
+        <div><p class="eyebrow">START CREATING</p><h2 id="form-title">Set the scene</h2></div>
+        <span class="panel-count">5 PANELS</span>
+      </div>
+      {% if error %}
+      <div class="error-message" role="alert">{{ error }}</div>
+      {% endif %}
+      <form action="/generate" method="post">
+        <label for="story_prompt">What's your story about?</label>
+        <textarea id="story_prompt" name="story_prompt" rows="3" minlength="10" maxlength="1000" placeholder="A tiny astronaut discovers a garden growing on the moon..." required></textarea>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="character_name">Main character</label>
+            <input id="character_name" name="character_name" maxlength="80" placeholder="e.g. Miko" required>
+          </div>
+          <div class="field">
+            <label for="setting">Setting</label>
+            <input id="setting" name="setting" maxlength="120" placeholder="e.g. The moon" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="tone">Story tone</label>
+            <select id="tone" name="tone" required>
+              <option value="light-hearted">Light-hearted</option>
+              <option value="dramatic">Dramatic</option>
+              <option value="poetic">Poetic</option>
+              <option value="funny">Funny</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="art_style">Art style</label>
+            <select id="art_style" name="art_style" required>
+              <option value="comic book">Comic book</option>
+              <option value="anime">Anime</option>
+              <option value="pixel art">Pixel art</option>
+              <option value="realistic">Realistic</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="button button-primary generate-button" type="submit">Create my comic <span aria-hidden="true">↗</span></button>
+        <p class="form-footnote">{% if auth_user %}Generation can take a few minutes while each panel is illustrated.{% else %}Create an account or sign in before generating a comic.{% endif %}</p>
+      </form>
+    </section>
+  </main>
+  <footer class="site-footer"><span>COMICCRAFT</span><span>Made for the stories only you can tell.</span></footer>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your comic — ComicCraft</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/"><span class="brand-mark">C</span> ComicCraft</a>
+    <a class="quiet-link" href="/">Make another <span aria-hidden="true">↗</span></a>
+  </header>
+  <main class="preview-main">
+    <div class="preview-heading">
+      <div><p class="eyebrow">FRESH OFF THE PRESS</p><h1>Your story, <span>illustrated.</span></h1><p class="intro-copy">Five scenes. One whole new world. Your comic is ready to keep.</p></div>
+      <a class="button button-primary download-button" href="{{ pdf_url }}" download="{{ comic_id }}.pdf" id="download-comic">Download your comic <span aria-hidden="true">↓</span></a>
+    </div>
+    <p class="download-status" id="download-status" aria-live="polite"></p>
+    <section class="comic-grid" aria-label="Comic panels">
+      {% for panel in layout %}
+      <article class="comic-panel">
+        <div class="comic-image-wrap"><img src="{{ panel.image_url }}" alt="Illustration for panel {{ panel.panel_number }}: {{ panel.scene_description }}" loading="lazy"><span class="panel-label">PANEL {{ "%02d"|format(panel.panel_number) }}</span></div>
+        <div class="panel-copy">
+          <h2>{{ panel.title }}</h2>
+          <p class="scene-description">{{ panel.scene_description }}</p>
+          <p class="caption">{{ panel.caption }}</p>
+          <p class="narration">{{ panel.narration }}</p>
+          {% if panel.dialogue %}<blockquote>“{{ panel.dialogue }}”</blockquote>{% endif %}
+          <details><summary>Illustration prompt</summary><p>{{ panel.image_prompt }}</p></details>
+        </div>
+      </article>
+      {% endfor %}
+    </section>
+  </main>
+  <footer class="site-footer"><span>COMICCRAFT</span><a href="/">Start another story ↗</a></footer>
+  <script>
+    const downloadLink = document.getElementById("download-comic");
+    const downloadStatus = document.getElementById("download-status");
+    downloadLink.addEventListener("click", async (event) => {
+      if (!("createObjectURL" in URL)) return;
+      event.preventDefault();
+      downloadLink.setAttribute("aria-disabled", "true");
+      downloadStatus.textContent = "Preparing your PDF…";
+      try {
+        const response = await fetch(downloadLink.href);
+        if (!response.ok) throw new Error(`Download failed (${response.status}).`);
+        const blobUrl = URL.createObjectURL(await response.blob());
+        const fileLink = document.createElement("a");
+        fileLink.href = blobUrl;
+        fileLink.download = downloadLink.download;
+        document.body.appendChild(fileLink);
+        fileLink.click();
+        fileLink.remove();
+        downloadStatus.textContent = "Your comic is downloaded. Taking you to the export confirmation…";
+        window.setTimeout(() => {
+          URL.revokeObjectURL(blobUrl);
+          window.location.assign("/export-success?downloaded=true");
+        }, 1000);
+      } catch (error) {
+        downloadStatus.textContent = `${error.message} You can retry using the download button.`;
+        downloadLink.removeAttribute("aria-disabled");
+      }
+    });
+  </script>
+</body>
+</html>

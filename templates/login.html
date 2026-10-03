@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f0e8">
+  <title>Sign in — ComicCraft</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="ComicCraft home"><span class="brand-mark">C</span> ComicCraft</a>
+    <a class="quiet-link" href="/">Back to creating <span aria-hidden="true">↗</span></a>
+  </header>
+  <main class="login-main">
+    <section class="login-card" aria-labelledby="login-title">
+      <p class="eyebrow">YOUR NEXT STORY STARTS HERE</p>
+      <h1 id="login-title">Welcome <span>back.</span></h1>
+      <p class="login-copy">Sign in to continue to ComicCraft.</p>
+      {% if error %}<div class="error-message" role="alert">{{ error }}</div>{% endif %}
+      <form class="login-form" action="/login" method="post">
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" autocomplete="username" placeholder="you@example.com" required>
+
+        <label for="password">Password</label>
+        <div class="password-field">
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+          <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+        </div>
+
+        <button class="button button-primary login-button" type="submit">Sign in <span aria-hidden="true">↗</span></button>
+      </form>
+      <p class="login-backlink">New to ComicCraft? <a href="/register">Create an account</a></p>
+    </section>
+  </main>
+  <footer class="site-footer"><span>COMICCRAFT</span><span>Made for the stories only you can tell.</span></footer>
+  <script>
+    const passwordInput = document.getElementById("password");
+    const passwordToggle = document.querySelector(".password-toggle");
+    passwordToggle.addEventListener("click", () => {
+      const isVisible = passwordInput.type === "text";
+      passwordInput.type = isVisible ? "password" : "text";
+      passwordToggle.textContent = isVisible ? "Show" : "Hide";
+      passwordToggle.setAttribute("aria-label", isVisible ? "Show password" : "Hide password");
+      passwordToggle.setAttribute("aria-pressed", String(!isVisible));
+    });
+  </script>
+</body>
+</html>

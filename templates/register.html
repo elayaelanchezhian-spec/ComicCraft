@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f0e8">
+  <title>Create account — ComicCraft</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="ComicCraft home"><span class="brand-mark">C</span> ComicCraft</a>
+    <a class="quiet-link" href="/login">Sign in</a>
+  </header>
+  <main class="login-main">
+    <section class="login-card" aria-labelledby="register-title">
+      <p class="eyebrow">MAKE ROOM FOR A NEW STORY</p>
+      <h1 id="register-title">Join <span>ComicCraft.</span></h1>
+      <p class="login-copy">Create an account to generate and keep your illustrated comics.</p>
+      {% if error %}<div class="error-message" role="alert">{{ error }}</div>{% endif %}
+      <form class="login-form" action="/register" method="post">
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" placeholder="At least 12 characters" required>
+
+        <label for="confirm-password">Confirm password</label>
+        <input id="confirm-password" name="confirm_password" type="password" autocomplete="new-password" minlength="12" maxlength="128" placeholder="Enter your password again" required>
+
+        <button class="button button-primary login-button" type="submit">Create account <span aria-hidden="true">↗</span></button>
+      </form>
+      <p class="login-backlink">Already have an account? <a href="/login">Sign in</a></p>
+    </section>
+  </main>
+  <footer class="site-footer"><span>COMICCRAFT</span><span>Made for the stories only you can tell.</span></footer>
+</body>
+</html>
